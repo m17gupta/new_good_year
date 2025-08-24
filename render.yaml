@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: medusa-backend
+    env: node
+    plan: starter
+    buildCommand: cd backend && yarn install && yarn build
+    startCommand: cd backend && yarn start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: medusa-postgres
+          property: connectionString
+      - key: STORE_CORS
+        value: "*"
+      - key: ADMIN_CORS
+        value: "*"
+      - key: AUTH_CORS
+        value: "*"
+      - key: JWT_SECRET
+        generateValue: true
+      - key: COOKIE_SECRET
+        generateValue: true
+    healthCheckPath: /health
+
+databases:
+  - name: medusa-postgres
+    databaseName: medusa
+    user: medusa
+    plan: starter
