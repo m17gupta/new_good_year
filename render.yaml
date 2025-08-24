@@ -3,7 +3,7 @@ services:
     name: medusa-backend
     env: node
     plan: starter
-    buildCommand: cd backend && yarn install && yarn build
+    buildCommand: corepack enable && cd backend && yarn install && yarn build
     startCommand: cd backend && yarn start
     envVars:
       - key: NODE_ENV

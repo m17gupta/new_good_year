@@ -1,6 +1,9 @@
 # Use Node.js 20 LTS
 FROM node:20-alpine
 
+# Enable Corepack to use the correct Yarn version
+RUN corepack enable
+
 # Set working directory
 WORKDIR /app/backend
 

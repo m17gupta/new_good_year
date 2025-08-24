@@ -28,6 +28,7 @@
    - Select "Blueprint"
    - Connect your GitHub repository: `m17gupta/new_good_year`
    - Render will automatically detect the `render.yaml` file
+   - **Note**: Blueprint deployment may require payment details even for free tier services
 
 4. **Review and Deploy**:
    - Render will create:
@@ -35,13 +36,39 @@
      - Web service for your backend
    - Click "Apply" to deploy
 
-### Option 2: Manual Web Service Creation
+### Alternative: Free Tier Manual Setup (No Payment Required)
+
+If Render asks for payment details with Blueprint, use this manual approach:
+
+1. **Skip Blueprint, use manual setup instead**
+2. **Create PostgreSQL Database** (Free tier available):
+   - Click "New +" → "PostgreSQL"
+   - Name: `medusa-postgres`
+   - Database Name: `medusa`
+   - User: `medusa`
+   - Region: Choose closest to you
+   - Plan: **Free** (no payment required)
+   - Click "Create Database"
+
+3. **Create Web Service** (Free tier available):
+   - Click "New +" → "Web Service"
+   - Connect your GitHub repository: `m17gupta/new_good_year`
+   - Configure:
+     - **Name**: `medusa-backend`
+     - **Root Directory**: `backend`
+     - **Environment**: `Node`
+     - **Build Command**: `yarn install && yarn build`
+     - **Start Command**: `yarn start`
+     - **Plan**: **Free** (no payment required)
+   - Click "Create Web Service"
+
+### Option 2: Manual Web Service Creation (Free Tier - No Payment Required)
 
 1. **Create PostgreSQL Database**:
    - Go to Render Dashboard
    - Click "New +" → "PostgreSQL"
    - Name: `medusa-postgres`
-   - Plan: Free (or Starter for production)
+   - Plan: **Free** (no payment details required)
    - Note the connection details
 
 2. **Create Web Service**:
@@ -49,21 +76,47 @@
    - Connect your GitHub repository
    - Configure:
      - **Name**: `medusa-backend`
+     - **Root Directory**: `backend`
      - **Environment**: `Node`
-     - **Build Command**: `cd backend && yarn install && yarn build`
-     - **Start Command**: `cd backend && yarn start`
-     - **Plan**: Free (or Starter for production)
+     - **Build Command**: `yarn install && yarn build`
+     - **Start Command**: `yarn start`
+     - **Plan**: **Free** (no payment details required)
 
-3. **Set Environment Variables**:
+3. **Set Environment Variables** (in Web Service settings):
    ```
    NODE_ENV=production
-   DATABASE_URL=[Your PostgreSQL connection string from step 1]
+   DATABASE_URL=[Copy from your PostgreSQL database dashboard]
    STORE_CORS=*
    ADMIN_CORS=*
    AUTH_CORS=*
-   JWT_SECRET=[Generate a secure random string]
-   COOKIE_SECRET=[Generate a secure random string]
+   JWT_SECRET=[Generate using command below]
+   COOKIE_SECRET=[Generate using command below]
    ```
+
+## Alternative Free Deployment Platforms
+
+If Render requires payment details you don't have, here are completely free alternatives:
+
+### Railway (Free Tier)
+1. Go to [Railway.app](https://railway.app)
+2. Sign up with GitHub
+3. Click "New Project" → "Deploy from GitHub repo"
+4. Select your repository
+5. Railway will auto-detect Node.js and deploy
+6. Add PostgreSQL database from Railway dashboard
+7. Set environment variables in Railway dashboard
+
+### Vercel (Free for hobby projects)
+1. Go to [Vercel.com](https://vercel.com)
+2. Import your GitHub repository
+3. Configure build settings:
+   - Build Command: `cd backend && yarn build`
+   - Output Directory: `backend/dist`
+4. Add Supabase or PlanetScale for free PostgreSQL
+
+### Heroku (Free tier discontinued, but has low-cost options)
+- $5/month for basic dyno
+- Includes PostgreSQL addon
 
 ## Environment Variables Setup
 
