@@ -57,7 +57,7 @@ If Render asks for payment details with Blueprint, use this manual approach:
      - **Name**: `medusa-backend`
      - **Root Directory**: `backend`
      - **Environment**: `Node`
-     - **Build Command**: `yarn install && yarn build`
+     - **Build Command**: `corepack enable && yarn install && yarn build`
      - **Start Command**: `yarn start`
      - **Plan**: **Free** (no payment required)
    - Click "Create Web Service"
@@ -78,7 +78,7 @@ If Render asks for payment details with Blueprint, use this manual approach:
      - **Name**: `medusa-backend`
      - **Root Directory**: `backend`
      - **Environment**: `Node`
-     - **Build Command**: `yarn install && yarn build`
+     - **Build Command**: `corepack enable && yarn install && yarn build`
      - **Start Command**: `yarn start`
      - **Plan**: **Free** (no payment details required)
 
@@ -158,10 +158,38 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 ## Troubleshooting
 
+### Common Deployment Errors
+
+#### Yarn Version Mismatch Error
+**Error**: `This project's package.json defines "packageManager": "yarn@4.4.0". However the current global version of Yarn is 1.22.22`
+
+**Solution**: 
+1. Update your `render.yaml` build command to enable Corepack:
+   ```yaml
+   buildCommand: corepack enable && cd backend && yarn install && yarn build
+   ```
+
+2. Update your `Dockerfile` (if using Docker deployment):
+   ```dockerfile
+   FROM node:20-alpine
+   RUN corepack enable
+   ```
+
+3. Alternative: Remove the packageManager specification from root `package.json`:
+   ```json
+   {
+     // Remove this line:
+     // "packageManager": "yarn@4.4.0+sha512..."
+   }
+   ```
+
+#### Other Common Issues
 - **Build fails**: Check Node.js version (requires >=20)
 - **Database connection**: Verify DATABASE_URL format
 - **CORS errors**: Update CORS environment variables
 - **Health check fails**: Service might still be starting (allow 2-3 minutes)
+- **Memory errors**: Consider upgrading from Free tier to Starter plan
+- **Timeout errors**: Build process taking too long - may need paid plan for faster builds
 
 ## Next Steps
 
