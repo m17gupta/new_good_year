@@ -12,7 +12,8 @@ RUN apk add --no-cache \
     postgresql-client \
     python3 \
     make \
-    g++
+    g++ \
+    curl
 
 # Copy package files
 COPY backend/package.json backend/yarn.lock ./
@@ -23,7 +24,7 @@ RUN yarn install --frozen-lockfile
 # Copy source code
 COPY backend/ .
 
-# Build the application
+# Build the application (this will create .medusa/client with admin files)
 RUN yarn build
 
 # Expose port

@@ -160,6 +160,32 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 ### Common Deployment Errors
 
+#### Admin Build Error: "Could not find index.html in the admin build directory"
+**Error**: `Could not find index.html in the admin build directory. Make sure to run 'medusa build' before starting the server.`
+
+**Solution for Medusa v2**: 
+This error occurs because Medusa v2 changed the admin build structure. The admin files are now built to `.medusa/client/` instead of the traditional build path. 
+
+1. **Ensure your render.yaml uses the standard plan** (not starter) to have sufficient memory:
+   ```yaml
+   plan: standard  # Instead of starter
+   ```
+
+2. **Make sure the build command includes `yarn build`**:
+   ```yaml
+   buildCommand: corepack enable && cd backend && yarn install --frozen-lockfile && yarn build
+   ```
+
+3. **If using Docker deployment**, ensure the Dockerfile runs the build:
+   ```dockerfile
+   RUN yarn build
+   ENV MEDUSA_ADMIN_BUILD_PATH=.medusa/client
+   ```
+
+4. **Memory Issues**: The starter plan may have insufficient memory. Upgrade to standard plan:
+   - **Starter Plan**: 512 MB RAM (may cause build failures)
+   - **Standard Plan**: 2 GB RAM (recommended for Medusa)
+
 #### Yarn Version Mismatch Error
 **Error**: `This project's package.json defines "packageManager": "yarn@4.4.0". However the current global version of Yarn is 1.22.22`
 
@@ -188,8 +214,12 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 - **Database connection**: Verify DATABASE_URL format
 - **CORS errors**: Update CORS environment variables
 - **Health check fails**: Service might still be starting (allow 2-3 minutes)
-- **Memory errors**: Consider upgrading from Free tier to Starter plan
+- **Memory errors**: 
+  - **Cause**: Starter plan (512 MB) insufficient for Medusa v2
+  - **Solution**: Upgrade to Standard plan (2 GB) or higher
+  - **Alternative**: Use Docker deployment which can be more memory efficient
 - **Timeout errors**: Build process taking too long - may need paid plan for faster builds
+- **Admin not accessible**: Ensure `yarn build` completed successfully and `.medusa/client/index.html` exists
 
 ## Next Steps
 
