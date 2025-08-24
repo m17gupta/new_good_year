@@ -1,27 +1,57 @@
-/dist
-.env
-.DS_Store
-/uploads
-/node_modules
-yarn-error.log
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# IDEs
 .idea
+.vscode
 
-coverage
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
 
-!src/**
+# testing
+/coverage
 
-./tsconfig.tsbuildinfo
-package-lock.json
-medusa-db.sql
-build
-.cache
+# next.js
+/.next/
+/out/
 
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
+# production
+/build
 
-.medusa
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# local env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+node_modules
+
+.yarn
+.swc
+dump.rdb
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth
