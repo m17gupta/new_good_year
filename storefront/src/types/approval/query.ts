@@ -1,18 +1,11 @@
-import { B2BCart } from "@/types"
 import {
-  ApprovalStatusType,
-  ModuleApproval,
   ModuleApprovalSettings,
-} from "./module"
+  ModuleApproval,
+  ModuleApprovalStatus,
+} from "./module";
 
-export type QueryApprovalSettings = ModuleApprovalSettings
+export type QueryApprovalSettings = ModuleApprovalSettings;
 
-export type QueryApproval = ModuleApproval & {
-  cart?: B2BCart
-}
+export type QueryApproval = ModuleApproval;
 
-export type QueryApprovalStatus = {
-  id: string
-  cart_id: string
-  status: ApprovalStatusType
-}
+export type QueryApprovalStatus = ModuleApprovalStatus;
