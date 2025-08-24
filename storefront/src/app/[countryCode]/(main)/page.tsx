@@ -14,14 +14,9 @@ export const metadata: Metadata = {
 }
 
 export async function generateStaticParams() {
-  const countryCodes = await listRegions().then(
-    (regions) =>
-      regions
-        ?.map((r) => r.countries?.map((c) => c.iso_2))
-        .flat()
-        .filter(Boolean) as string[]
-  )
-  return countryCodes.map((countryCode) => ({ countryCode }))
+  // Temporarily disable static generation during development
+  // to avoid build-time dependency on the backend
+  return []
 }
 
 export default async function Home(props: {

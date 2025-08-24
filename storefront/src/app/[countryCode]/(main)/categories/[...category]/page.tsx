@@ -38,28 +38,9 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const countryCodes = await listRegions().then(
-    (regions) =>
-      regions
-        ?.map((r) => r.countries?.map((c) => c.iso_2))
-        .flat()
-        .filter(Boolean) as string[]
-  )
-
-  if (!countryCodes) {
-    return null
-  }
-
-  const categories = await listCategories()
-
-  return countryCodes
-    .map((countryCode) =>
-      categories.map((category) => ({
-        countryCode,
-        category: category.handle.split("/"),
-      }))
-    )
-    .flat()
+  // Temporarily disable static generation during development
+  // to avoid build-time dependency on the backend
+  return []
 }
 
 export default async function CategoryPage(props: Props) {
